@@ -1,4 +1,4 @@
-package com.example.kafka.WithCallback;
+package com.example.kafka.withCallback;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

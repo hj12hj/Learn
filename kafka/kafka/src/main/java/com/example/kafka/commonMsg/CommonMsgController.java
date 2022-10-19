@@ -23,7 +23,7 @@ public class CommonMsgController {
     @GetMapping("/send")
     @Transactional
     public String send(String msg) {
-        kafkaTemplate.send("common", msg);
+        kafkaTemplate.send("kafka-topic2", msg);
         return "success";
     }
 
