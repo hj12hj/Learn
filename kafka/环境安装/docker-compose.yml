@@ -1,0 +1,64 @@
+version: '3.0'
+services:
+  zookeeper:
+    restart: always
+    image: wurstmeister/zookeeper:latest
+    volumes:
+      - /opt/zookeeper/data:/data
+    ports:
+      - "2181:2181"
+    container_name: zookeeper
+
+  kafka:
+    restart: always
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - /opt/kafka/docker.sock:/var/run/docker.sock
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://101.43.123.85:9092
+    depends_on:
+      - zookeeper
+
+  #    管理工具 选择一个
+  kafka-manager:
+    restart: always
+    image: sheepkiller/kafka-manager:latest
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181
+    container_name: kafka-manager
+    depends_on:
+      - kafka
+      - zookeeper
+
+  kafka-ui:
+    restart: always
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 101.43.123.85:9092  #kafka地址
+    depends_on:
+      - kafka
+      - zookeeper
+    container_name: kafka-ui
+#
+#
+#  kafkaUI-lite:
+#    restart: always
+#    image: freakchicken/kafka-ui-lite:latest
+#    ports:
+#      - "8889:8889"
+#    container_name: kafkaUI-lite
+#    depends_on:
+#      - kafka
+#      - zookeeper
+
+
