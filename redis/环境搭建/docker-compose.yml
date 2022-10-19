@@ -1,0 +1,15 @@
+version: '3.0'
+services:
+  redis:
+    restart: always
+    image: redis:6.2.1
+    ports:
+      - 6379:6379
+    volumes:
+      - /opt/redis/data:/data
+    container_name: redis
+    environment:
+      - TZ=Asia/Shanghai
+    #        设置密码
+    command:
+      --requirepass "123456"
