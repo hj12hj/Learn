@@ -1,0 +1,29 @@
+server:
+  port: 8010
+
+spring:
+    application:
+        name: nacos-gateway
+    cloud:
+      nacos:
+          discovery:
+                enabled: true
+                server-addr: localhost:8848
+                ip: localhost
+          config:
+                enabled: true
+                server-addr: localhost:8848
+                file-extension: yaml
+      gateway:
+#        discovery:
+#          locator:
+#            enabled: true
+#            lower-case-service-id: true
+          routes:
+          - id: nacos-provider
+            uri: lb://nacos-test
+            predicates:
+              - Path=/nacos-test/**
+            filters:
+              - StripPrefix=1
+              - ElapsedTime
