@@ -14,16 +14,8 @@ spring:
                 enabled: true
                 server-addr: localhost:8848
                 file-extension: yaml
-      gateway:
-#        discovery:
-#          locator:
-#            enabled: true
-#            lower-case-service-id: true
-          routes:
-          - id: nacos-provider
-            uri: lb://nacos-test
-            predicates:
-              - Path=/nacos-test/**
-            filters:
-              - StripPrefix=1
-              - ElapsedTime
+    redis:
+      database: 0
+      host: 10.55.254.135
+      port: 6379
+      password: 123456

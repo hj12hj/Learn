@@ -29,8 +29,6 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         // 1.获取请求参数
         MultiValueMap<String, String> params = exchange.getRequest().getQueryParams();
         HttpHeaders headers = exchange.getRequest().getHeaders();
-
-        System.out.println(headers.get("authorization"));
         // 2.获取authorization参数
         String auth = params.getFirst("authorization");
         // 3.校验
