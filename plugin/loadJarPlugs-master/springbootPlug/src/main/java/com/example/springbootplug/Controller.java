@@ -36,7 +36,7 @@ public class Controller {
     @GetMapping("/reload")
     public String reload() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         plugsList.clear();
-        File dirFile = new File("/Users/hejie/Desktop/java_learn/plug");
+        File dirFile = new File("plug");
         System.out.println(dirFile.getAbsolutePath());
         if (!dirFile.exists()) return "Ok";
         File[] files = dirFile.listFiles();

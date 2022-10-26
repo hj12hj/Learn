@@ -29,11 +29,7 @@ public class SpringbootPlugApplication {
 //        if (res==null) return plugsList;
 //        File res = new File("plug");
 //        String path = res.getAbsolutePath();
-        System.out.println(111111);
-        System.out.println(111111);
-        System.out.println(111111);
-
-        File dirFile = new File("/Users/hejie/Desktop/java_learn/plug");
+        File dirFile = new File("plug");
         System.out.println(dirFile.getAbsolutePath());
         if (!dirFile.exists()) return plugsList;
         File[] files = dirFile.listFiles();
