@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.testmb.mapper.UserMapper">
+    <sql id="findAll">
+        select *
+        from user
+    </sql>
+    <sql id="whereId">
+        <if test="id != null">
+            where id = #{id}
+        </if>
+    </sql>
+    <insert id="insertAll" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into user ( name, password)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name}, #{item.password})
+        </foreach>
+    </insert>
+    <update id="updateByConditions">
+        update user
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+        </set>
+        <include refid="whereId"/>
+    </update>
+
+    <select id="findAll" parameterType="com.example.testmb.entity.User" resultType="com.example.testmb.entity.User">
+        select * from user
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="findByConditional" resultType="com.example.testmb.entity.User">
+        select *
+        from user
+        where ${column} = #{value}
+    </select>
+    <select id="findMaps" resultType="java.util.Map">
+        select u.id as id, u.name as name
+        from user u
+    </select>
+
+    <select id="findByConditions" resultType="com.example.testmb.entity.User">
+        select * from user
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+        </trim>
+    </select>
+
+    <select id="findByBind" resultType="com.example.testmb.entity.User">
+        <bind name="namePattern" value="'%' + _parameter.getName() + '%'"/>
+        select * from user where name like #{namePattern}
+    </select>
+</mapper>
