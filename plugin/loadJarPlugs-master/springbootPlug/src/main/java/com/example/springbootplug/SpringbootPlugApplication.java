@@ -2,43 +2,40 @@ package com.example.springbootplug;
 
 import com.hj.Plugs;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-/**
- * @author: hj
- * @date: 2022/10/26
- * @time: 2:50 PM
- */
-@RestController
-public class Controller {
+@SpringBootApplication
+public class SpringbootPlugApplication {
 
 
-    @Autowired
-    private List<Plugs> plugsList;
+    @Bean("plugsList")
+    public List<Plugs> plugsList() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        List<Plugs> plugsList = new ArrayList<>();
+//        ClassLoader classLoader = SpringbootPlugApplication.class.getClassLoader();
+//        URL res = classLoader.getResource("plug");
+//        if (res==null) return plugsList;
+//        File res = new File("plug");
+//        String path = res.getAbsolutePath();
+        System.out.println(111111);
+        System.out.println(111111);
+        System.out.println(111111);
 
-
-    @GetMapping("/test")
-    public String test(){
-        plugsList.forEach(plugs -> plugs.show());
-        return "test";
-    }
-
-    @GetMapping("/reload")
-    public String reload() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
-        plugsList.clear();
         File dirFile = new File("/Users/hejie/Desktop/java_learn/plug");
         System.out.println(dirFile.getAbsolutePath());
-        if (!dirFile.exists()) return "Ok";
+        if (!dirFile.exists()) return plugsList;
         File[] files = dirFile.listFiles();
         for (File file : files) {
             System.out.println(file.getAbsolutePath());
@@ -61,6 +58,11 @@ public class Controller {
 
         }
 
-        return "Ok";
+        return plugsList;
     }
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootPlugApplication.class, args);
+    }
+
 }
