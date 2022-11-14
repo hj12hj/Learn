@@ -1,9 +1,9 @@
-package com.example.disruptor.disrupror.config;
+package com.example.disruptor.sinDisrupror.config;
 
-import com.example.disruptor.disrupror.MessageEvent;
-import com.example.disruptor.disrupror.MessageEventFactory;
-import com.example.disruptor.disrupror.MessageEventHandler;
-import com.example.disruptor.disrupror.MessageEventProducer;
+import com.example.disruptor.sinDisrupror.MessageEvent;
+import com.example.disruptor.sinDisrupror.MessageEventFactory;
+import com.example.disruptor.sinDisrupror.MessageEventHandler;
+import com.example.disruptor.sinDisrupror.MessageEventProducer;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
@@ -25,7 +26,7 @@ public class DisruptorConfig {
     @Autowired
     MessageEventHandler messageEventHandler;
 
-    Disruptor<MessageEvent> disruptor;
+    private Disruptor<MessageEvent> disruptor;
 
 
     @PostConstruct
@@ -54,5 +55,9 @@ public class DisruptorConfig {
     }
 
 
+    @PreDestroy
+    public void destroy() {
+        disruptor.shutdown();
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.example.disruptor.disrupror;
+package com.example.disruptor.sinDisrupror;
 
 import com.lmax.disruptor.RingBuffer;
 import org.springframework.stereotype.Component;

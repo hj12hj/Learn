@@ -1,4 +1,4 @@
-package com.example.disruptor.disrupror;
+package com.example.disruptor.sinDisrupror;
 
 import java.util.List;
 import java.util.Map;

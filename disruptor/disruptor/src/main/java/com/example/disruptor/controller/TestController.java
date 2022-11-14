@@ -1,6 +1,6 @@
 package com.example.disruptor.controller;
 
-import com.example.disruptor.disrupror.MessageEventProducer;
+import com.example.disruptor.sinDisrupror.MessageEventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
