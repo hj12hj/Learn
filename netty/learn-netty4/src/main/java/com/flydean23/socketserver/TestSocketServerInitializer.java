@@ -20,6 +20,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolConfig;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 
 /**
  */
@@ -32,5 +34,12 @@ public class TestSocketServerInitializer extends ChannelInitializer<SocketChanne
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast(new TestSocketServerHandler());
+
+//
+//        WebSocketServerProtocolConfig webSocketServerProtocolConfig = WebSocketServerProtocolConfig.newBuilder()
+//                .websocketPath("/websocket")
+//                .build();
+//        pipeline.addLast(new WebSocketServerProtocolHandler(webSocketServerProtocolConfig));
+//        pipeline.addLast(new WebSocketFrameHandle());
     }
 }

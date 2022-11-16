@@ -46,7 +46,7 @@ public class TestSocketServerHandler extends SimpleChannelInboundHandler<Object>
         if (msg instanceof FullHttpRequest) {
             handleHttpRequest(ctx, (FullHttpRequest) msg);
         } else if (msg instanceof WebSocketFrame) {
-            handleWebSocketFrame(ctx, (WebSocketFrame) msg);
+          //  handleWebSocketFrame(ctx, (WebSocketFrame) msg);
         }
     }
 
@@ -56,31 +56,31 @@ public class TestSocketServerHandler extends SimpleChannelInboundHandler<Object>
     }
 
     private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest req) throws IOException {
-        // 处理异常
-        if (!req.decoderResult().isSuccess()) {
-            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(req.protocolVersion(), BAD_REQUEST,
-                                                                   ctx.alloc().buffer(0)));
-            return;
-        }
-
-        // 只允许get请求
-        if (!GET.equals(req.method())) {
-            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(req.protocolVersion(), FORBIDDEN,
-                                                                   ctx.alloc().buffer(0)));
-            return;
-        }
-
-        // 发送测试页面
-        if ("/".equals(req.uri())) {
-            ByteBuf content = TestSocketHttpPage.getContent();
-            FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), OK, content);
-
-            res.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
-            HttpUtil.setContentLength(res, content.readableBytes());
-
-            sendHttpResponse(ctx, req, res);
-            return;
-        }
+//        // 处理异常
+//        if (!req.decoderResult().isSuccess()) {
+//            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(req.protocolVersion(), BAD_REQUEST,
+//                                                                   ctx.alloc().buffer(0)));
+//            return;
+//        }
+//
+//        // 只允许get请求
+//        if (!GET.equals(req.method())) {
+//            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(req.protocolVersion(), FORBIDDEN,
+//                                                                   ctx.alloc().buffer(0)));
+//            return;
+//        }
+//
+//        // 发送测试页面
+//        if ("/".equals(req.uri())) {
+//            ByteBuf content = TestSocketHttpPage.getContent();
+//            FullHttpResponse res = new DefaultFullHttpResponse(req.protocolVersion(), OK, content);
+//
+//            res.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
+//            HttpUtil.setContentLength(res, content.readableBytes());
+//
+//            sendHttpResponse(ctx, req, res);
+//            return;
+//        }
 
         // websocket握手
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
@@ -106,7 +106,8 @@ public class TestSocketServerHandler extends SimpleChannelInboundHandler<Object>
         }
         if (frame instanceof TextWebSocketFrame) {
             // 直接返回
-            ctx.write(frame.retain());
+            WebSocketFrame textFrame = new TextWebSocketFrame("hello world");
+            ctx.write(textFrame);
             return;
         }
         if (frame instanceof BinaryWebSocketFrame) {
