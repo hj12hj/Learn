@@ -3,6 +3,7 @@ package com.hj.shiroconfig;
 import org.apache.catalina.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,31 +28,22 @@ public class ShiroConfig {
         //配置系统受限资源
         //配置系统公共资源
         Map<String, String> map = new HashMap<String, String>();
-//        map.put("/**", "authc");//表示这个资源需要认证和授权
-        map.put("/11", "hj");//表示这个资源需要认证和授权
+        map.put("/**", "authc");//表示这个资源需要认证和授权
         // 设置认证界面路径
 //        shiroFilterFactoryBean.setLoginUrl("/login");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 
 
-        shiroFilterFactoryBean.getFilters().put("hj", new Filter() {
-            @Override
-            public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-                System.out.println("hj");
-                filterChain.doFilter(servletRequest, servletResponse);
-
-            }
-        });
-
         return shiroFilterFactoryBean;
     }
 
     //创建安全管理器
     @Bean
-    public DefaultWebSecurityManager defaultWebSecurityManager(CustomerRealm realm) {
+    public DefaultWebSecurityManager defaultWebSecurityManager(CustomerRealm realm,DefaultWebSubjectFactory defaultWebSubjectFactory) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
+        securityManager.setSubjectFactory(defaultWebSubjectFactory);
         return securityManager;
     }
 
@@ -59,6 +51,11 @@ public class ShiroConfig {
     public CustomerRealm customerRealm() {
         CustomerRealm realm = new CustomerRealm();
         return realm;
+    }
+
+    @Bean
+    public DefaultWebSubjectFactory defaultWebSubjectFactory() {
+        return new StatelessDefaultSubjectFactory();
     }
 
 }
