@@ -1,9 +1,11 @@
 package com.hj.shiroconfig;
 
 import org.apache.catalina.Realm;
+import org.apache.shiro.mgt.SubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -43,6 +45,7 @@ public class ShiroConfig {
     public DefaultWebSecurityManager defaultWebSecurityManager(CustomerRealm realm,DefaultWebSubjectFactory defaultWebSubjectFactory) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
+        securityManager.setSubjectDAO(subjectDAO());
         securityManager.setSubjectFactory(defaultWebSubjectFactory);
         return securityManager;
     }
@@ -58,4 +61,9 @@ public class ShiroConfig {
         return new StatelessDefaultSubjectFactory();
     }
 
+
+    @Bean
+    public SubjectDAO subjectDAO() {
+        return new MySubjectDAO();
+    }
 }
